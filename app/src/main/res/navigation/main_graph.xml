@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.farinas.cocktailsapp.ui.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        android:label="Cocktails"
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_cocktailDetailsFragment"
             app:destination="@id/cocktailDetailsFragment" />
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/cocktailDetailsFragment"
         android:name="com.farinas.cocktailsapp.ui.CocktailDetailsFragment"
-        android:label="fragment_cocktail_details"
+        android:label="Detail"
         tools:layout="@layout/fragment_cocktail_details" />
 </navigation>

@@ -3,14 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".ui.MainFragment">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="25sp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Lista Tragos" />
+        android:text="Lista Tragos"
+        android:textSize="25sp" />
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:id="@+id/button_detalles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ir a detalle"/>
 
 </LinearLayout>
