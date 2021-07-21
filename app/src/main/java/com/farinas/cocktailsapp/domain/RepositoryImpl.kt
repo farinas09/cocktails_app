@@ -9,6 +9,6 @@ import com.farinas.cocktailsapp.vo.Resource
  */
 class RepositoryImpl(private val dataSource: DataSource): Repository {
     override fun getCocktailsList(): Resource<List<Drink>> {
-        return dataSource.getCocktailsList()
+        return dataSource.generateCocktailsList
     }
 }
