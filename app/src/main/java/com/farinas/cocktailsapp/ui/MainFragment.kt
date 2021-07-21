@@ -35,7 +35,7 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -77,7 +77,7 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
     override fun onCocktailClick(drink: Drink) {
         val bundle = Bundle()
         bundle.putParcelable("drink", drink)
-        findNavController().navigate(R.id.cocktailDetailsFragment)
+        findNavController().navigate(R.id.cocktailDetailsFragment, bundle)
     }
 
 }
