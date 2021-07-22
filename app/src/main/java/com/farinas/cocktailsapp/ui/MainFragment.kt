@@ -72,8 +72,9 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
 
     private fun setUpSearchView() {
         binding.searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.setCocktail(query!!)
+                return false
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
