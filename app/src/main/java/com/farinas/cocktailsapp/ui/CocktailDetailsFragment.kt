@@ -6,21 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.farinas.cocktailsapp.R
-import com.farinas.cocktailsapp.data.model.Drink
+import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentCocktailDetailsBinding
-import com.farinas.cocktailsapp.databinding.FragmentMainBinding
 
 class CocktailDetailsFragment : Fragment() {
 
     private var _binding: FragmentCocktailDetailsBinding? = null;
     private val binding get() = _binding!!
-    private lateinit var drink: Drink
+    private lateinit var cocktail: Cocktail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireArguments().let { drink = it.getParcelable("drink")!! }
-        Log.d("DETALLES", drink.toString())
+        requireArguments().let { cocktail = it.getParcelable("cocktail")!! }
+        Log.d("DETALLES", cocktail.toString())
     }
 
     override fun onCreateView(

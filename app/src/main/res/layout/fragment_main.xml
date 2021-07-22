@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".ui.MainFragment">
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <RelativeLayout
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
@@ -20,6 +26,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="8dp"
         android:id="@+id/rvCocktails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

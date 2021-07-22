@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farinas.cocktailsapp.R
 import com.farinas.cocktailsapp.data.DataSource
-import com.farinas.cocktailsapp.data.model.Drink
+import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentMainBinding
 import com.farinas.cocktailsapp.domain.RepositoryImpl
 import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
@@ -43,6 +43,12 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setUpSearchView()
+        setUpObservers()
+
+    }
+
+    private fun setUpObservers() {
         viewModel.fetchCocktailsList.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -64,6 +70,19 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
         })
     }
 
+    private fun setUpSearchView() {
+        binding.searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return false
+            }
+
+        })
+    }
+
     private fun setupRecyclerView() {
         binding.rvCocktails.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCocktails.addItemDecoration(
@@ -74,9 +93,9 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
         )
     }
 
-    override fun onCocktailClick(drink: Drink) {
+    override fun onCocktailClick(cocktail: Cocktail) {
         val bundle = Bundle()
-        bundle.putParcelable("drink", drink)
+        bundle.putParcelable("cocktail", cocktail)
         findNavController().navigate(R.id.cocktailDetailsFragment, bundle)
     }
 
