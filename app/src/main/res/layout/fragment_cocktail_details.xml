@@ -17,12 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/cocktail_img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        tools:src="@tools:sample/backgrounds/scenic"/>
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/cocktail_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -31,9 +31,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
+        android:src="@drawable/ic_favorite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-        android:src="@drawable/ic_favorite"/>
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
     <TextView
         android:id="@+id/cocktail_title"
@@ -46,8 +46,7 @@
         app:layout_constraintEnd_toStartOf="@+id/favorite_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/favorite_button"
-        tools:text="Margarita Blue"
-        />
+        tools:text="Margarita Blue" />
 
     <TextView
         android:id="@+id/cocktail_alcoholic"

@@ -1,6 +1,6 @@
 package com.farinas.cocktailsapp.domain
 
-import com.farinas.cocktailsapp.data.model.DrinkList
+import com.farinas.cocktailsapp.data.model.CocktailsList
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -9,5 +9,5 @@ import retrofit2.http.Query
  */
 interface WebService {
     @GET("search.php")
-    suspend fun getCocktailByName(@Query("s") cocktailName: String): DrinkList
+    suspend fun getCocktailByName(@Query("s") cocktailName: String): CocktailsList
 }

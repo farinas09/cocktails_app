@@ -2,6 +2,7 @@ package com.farinas.cocktailsapp.domain
 
 import com.farinas.cocktailsapp.data.DataSource
 import com.farinas.cocktailsapp.data.model.Cocktail
+import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.vo.Resource
 
 /**
@@ -10,5 +11,13 @@ import com.farinas.cocktailsapp.vo.Resource
 class RepositoryImpl(private val dataSource: DataSource): Repository {
     override suspend fun getCocktailsList(cocktailName: String): Resource<List<Cocktail>> {
         return dataSource.getCocktailByName(cocktailName)
+    }
+
+    override suspend fun getFavoriteCocktails(): Resource<List<CocktailEntity>> {
+        return dataSource.getFavoriteCocktails()
+    }
+
+    override suspend fun insertFavoriteCocktail(cocktail: CocktailEntity) {
+        dataSource.insertFavoriteCocktail(cocktail)
     }
 }

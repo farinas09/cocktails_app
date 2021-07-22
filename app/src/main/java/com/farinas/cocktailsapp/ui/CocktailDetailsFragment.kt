@@ -6,14 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.farinas.cocktailsapp.AppDatabase
+import com.farinas.cocktailsapp.data.DataSource
 import com.farinas.cocktailsapp.data.model.Cocktail
+import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.databinding.FragmentCocktailDetailsBinding
+import com.farinas.cocktailsapp.domain.RepositoryImpl
+import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
+import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
 
 class CocktailDetailsFragment : Fragment() {
 
-    private var _binding: FragmentCocktailDetailsBinding? = null;
-    private val binding get() = _binding!!
+    private val viewModel by viewModels<MainViewModel> { VMFactory(RepositoryImpl(DataSource(
+        AppDatabase.getDatabase(requireActivity().applicationContext)))) }
+    private lateinit var binding: FragmentCocktailDetailsBinding
     private lateinit var cocktail: Cocktail
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +35,7 @@ class CocktailDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCocktailDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentCocktailDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,6 +45,19 @@ class CocktailDetailsFragment : Fragment() {
         binding.cocktailTitle.text = cocktail.name
         binding.cocktailDescription.text = cocktail.description
         binding.cocktailAlcoholic.text = cocktail.hasAlcohol
+
+        binding.favoriteButton.setOnClickListener {
+            viewModel.saveFavorite(
+                CocktailEntity(
+                    cocktail.cocktailId,
+                    cocktail.image,
+                    cocktail.name,
+                    cocktail.description,
+                    cocktail.hasAlcohol
+                )
+            )
+            Toast.makeText(requireContext(), "Se agregó a favoritos", Toast.LENGTH_SHORT).show()
+        }
 
     }
 }

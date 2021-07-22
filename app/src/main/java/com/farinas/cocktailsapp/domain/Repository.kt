@@ -1,6 +1,7 @@
 package com.farinas.cocktailsapp.domain
 
 import com.farinas.cocktailsapp.data.model.Cocktail
+import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.vo.Resource
 
 /**
@@ -8,4 +9,6 @@ import com.farinas.cocktailsapp.vo.Resource
  */
 interface Repository {
     suspend fun getCocktailsList(cocktailName: String): Resource<List<Cocktail>>
+    suspend fun getFavoriteCocktails(): Resource<List<CocktailEntity>>
+    suspend fun insertFavoriteCocktail(cocktail: CocktailEntity)
 }

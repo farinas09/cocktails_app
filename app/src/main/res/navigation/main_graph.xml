@@ -17,10 +17,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/cocktailDetailsFragment"
         android:name="com.farinas.cocktailsapp.ui.CocktailDetailsFragment"
         android:label="Detail"
         tools:layout="@layout/fragment_cocktail_details" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.farinas.cocktailsapp.ui.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>
