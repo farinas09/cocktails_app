@@ -1,41 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical"
     tools:context=".ui.CocktailDetailsFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_image_size"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        app:cardCornerRadius="@dimen/common_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/cocktail_img"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/favorite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        android:src="@drawable/ic_favorite"/>
+
     <TextView
         android:id="@+id/cocktail_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="25sp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:textSize="@dimen/text_size_large"
         android:textStyle="bold"
-        tools:text="Margarita"
+        app:layout_constraintBottom_toBottomOf="@+id/favorite_button"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/favorite_button"
+        tools:text="Margarita Blue"
         />
 
     <TextView
         android:id="@+id/cocktail_alcoholic"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        tools:text="Non Alcoholic"
-        />
+        android:layout_marginStart="@dimen/margin_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cocktail_title"
+        tools:text="Non Alcoholic" />
 
     <TextView
         android:id="@+id/cocktail_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        tools:text="Margarita"
-        />
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_normal"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cocktail_alcoholic"
+        tools:text="@tools:sample/lorem/random" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
