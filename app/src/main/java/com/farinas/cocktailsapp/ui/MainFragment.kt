@@ -86,18 +86,12 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
 
     private fun setupRecyclerView() {
         binding.rvCocktails.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCocktails.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
     }
 
     override fun onCocktailClick(cocktail: Cocktail) {
         val bundle = Bundle()
         bundle.putParcelable("cocktail", cocktail)
-        findNavController().navigate(R.id.cocktailDetailsFragment, bundle)
+        findNavController().navigate(R.id.action_mainFragment_to_cocktailDetailsFragment, bundle)
     }
 
 }
