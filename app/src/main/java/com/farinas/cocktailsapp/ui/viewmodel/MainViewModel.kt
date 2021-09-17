@@ -41,12 +41,17 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         }
     }
 
-    fun getFavoritesCocktails() = liveData<Resource<List<CocktailEntity>>>(Dispatchers.IO) {
+    fun getFavoritesCocktails() = liveData<Resource<List<Cocktail>>>(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
             emit(repository.getFavoriteCocktails())
         } catch (e: Exception) {
             emit(Resource.Failure(e))
+        }
+    }
+    fun deleteCocktail(cocktail: Cocktail) {
+        viewModelScope.launch {
+            repository.deleteCocktail(cocktail)
         }
     }
 }

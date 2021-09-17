@@ -9,6 +9,7 @@ import com.farinas.cocktailsapp.vo.Resource
  */
 interface Repository {
     suspend fun getCocktailsList(cocktailName: String): Resource<List<Cocktail>>
-    suspend fun getFavoriteCocktails(): Resource<List<CocktailEntity>>
+    suspend fun getFavoriteCocktails(): Resource<List<Cocktail>>
     suspend fun insertFavoriteCocktail(cocktail: CocktailEntity)
+    suspend fun deleteCocktail(cocktail: Cocktail)
 }

@@ -9,8 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.farinas.cocktailsapp.AppDatabase
+import com.farinas.cocktailsapp.R
 import com.farinas.cocktailsapp.data.DataSource
+import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentFavoritesBinding
 import com.farinas.cocktailsapp.domain.RepositoryImpl
 import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
@@ -18,7 +22,7 @@ import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
 import com.farinas.cocktailsapp.vo.Resource
 
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener{
 
     private val viewModel by viewModels<MainViewModel> {
         VMFactory(
@@ -48,13 +52,19 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupObserver()
+
+    }
+
+    private fun setupObserver(){
         viewModel.getFavoritesCocktails().observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
+                    binding.rvFavsCocktails.adapter = FavoritesAdapter(requireContext(), result.data, this)
                     Log.d("FAVORITOS", "${result.data}")
-
                 }
                 is Resource.Failure -> {
                     Toast.makeText(
@@ -65,6 +75,16 @@ class FavoritesFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvFavsCocktails.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    override fun onCocktailClick(cocktail: Cocktail, position: Int) {
+        val bundle = Bundle()
+        bundle.putParcelable("cocktail", cocktail)
+        findNavController().navigate(R.id.action_favoritesFragment_to_cocktailDetailsFragment, bundle)
     }
 
 

@@ -1,9 +1,6 @@
 package com.farinas.cocktailsapp.domain
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.farinas.cocktailsapp.data.model.CocktailEntity
 
 /**
@@ -17,4 +14,7 @@ interface CocktailsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(cocktail: CocktailEntity)
+
+    @Delete
+    suspend fun deleteCocktail(cocktail: CocktailEntity)
 }

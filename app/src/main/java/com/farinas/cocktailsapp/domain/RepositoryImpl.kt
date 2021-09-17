@@ -13,11 +13,15 @@ class RepositoryImpl(private val dataSource: DataSource): Repository {
         return dataSource.getCocktailByName(cocktailName)
     }
 
-    override suspend fun getFavoriteCocktails(): Resource<List<CocktailEntity>> {
+    override suspend fun getFavoriteCocktails(): Resource<List<Cocktail>> {
         return dataSource.getFavoriteCocktails()
     }
 
     override suspend fun insertFavoriteCocktail(cocktail: CocktailEntity) {
         dataSource.insertFavoriteCocktail(cocktail)
+    }
+
+    override suspend fun deleteCocktail(cocktail: Cocktail) {
+        dataSource.deleteCocktail(cocktail)
     }
 }
