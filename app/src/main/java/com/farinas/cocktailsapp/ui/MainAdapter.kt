@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.farinas.cocktailsapp.R
-import com.farinas.cocktailsapp.base.BaseViewHolder
+import com.farinas.cocktailsapp.core.BaseViewHolder
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.DrinkRowBinding
 

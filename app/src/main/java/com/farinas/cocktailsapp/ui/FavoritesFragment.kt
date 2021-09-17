@@ -11,13 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.farinas.cocktailsapp.AppDatabase
+import com.farinas.cocktailsapp.data.local.AppDatabase
 import com.farinas.cocktailsapp.R
-import com.farinas.cocktailsapp.data.DataSource
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentFavoritesBinding
-import com.farinas.cocktailsapp.domain.RepositoryImpl
-import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
+import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
+import com.farinas.cocktailsapp.presentation.MainViewModel
 import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
 import com.farinas.cocktailsapp.vo.Resource
 
@@ -26,7 +25,7 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener{
 
     private val viewModel by viewModels<MainViewModel> {
         VMFactory(
-            RepositoryImpl(
+            CocktailRepositoryImpl(
                 DataSource(
                     AppDatabase.getDatabase(requireActivity().applicationContext)
                 )

@@ -1,4 +1,4 @@
-package com.farinas.cocktailsapp.base
+package com.farinas.cocktailsapp.core
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

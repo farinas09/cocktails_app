@@ -9,19 +9,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.farinas.cocktailsapp.AppDatabase
+import com.farinas.cocktailsapp.data.local.AppDatabase
 import com.farinas.cocktailsapp.R
-import com.farinas.cocktailsapp.data.DataSource
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentMainBinding
-import com.farinas.cocktailsapp.domain.RepositoryImpl
-import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
+import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
+import com.farinas.cocktailsapp.presentation.MainViewModel
 import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
 import com.farinas.cocktailsapp.vo.Resource
 
 class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
 
-    private val viewModel by viewModels<MainViewModel> { VMFactory(RepositoryImpl(DataSource(
+    private val viewModel by viewModels<MainViewModel> { VMFactory(CocktailRepositoryImpl(DataSource(
         AppDatabase.getDatabase(requireActivity().applicationContext)))) }
     private var _binding: FragmentMainBinding? = null;
     private val binding get() = _binding!!

@@ -1,14 +1,21 @@
-package com.farinas.cocktailsapp
+package com.farinas.cocktailsapp.application
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.farinas.cocktailsapp.R
+import com.farinas.cocktailsapp.core.observe
 import com.farinas.cocktailsapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var toastHelper: ToastHelper
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController:NavController
 
@@ -21,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
+
+        toastHelper.toastMessages.observe(this) {
+            showToast(it)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

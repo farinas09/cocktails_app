@@ -9,18 +9,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.farinas.cocktailsapp.AppDatabase
-import com.farinas.cocktailsapp.data.DataSource
+import com.farinas.cocktailsapp.data.local.AppDatabase
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.databinding.FragmentCocktailDetailsBinding
-import com.farinas.cocktailsapp.domain.RepositoryImpl
-import com.farinas.cocktailsapp.ui.viewmodel.MainViewModel
+import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
+import com.farinas.cocktailsapp.presentation.MainViewModel
 import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
 
 class CocktailDetailsFragment : Fragment() {
 
-    private val viewModel by viewModels<MainViewModel> { VMFactory(RepositoryImpl(DataSource(
+    private val viewModel by viewModels<MainViewModel> { VMFactory(CocktailRepositoryImpl(DataSource(
         AppDatabase.getDatabase(requireActivity().applicationContext)))) }
     private lateinit var binding: FragmentCocktailDetailsBinding
     private lateinit var cocktail: Cocktail
