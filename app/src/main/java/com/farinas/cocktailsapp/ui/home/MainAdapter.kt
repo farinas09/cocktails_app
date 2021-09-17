@@ -1,4 +1,4 @@
-package com.farinas.cocktailsapp.ui
+package com.farinas.cocktailsapp.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,12 +14,20 @@ import com.farinas.cocktailsapp.databinding.DrinkRowBinding
 /**
  * Created by Erick Fariñas on 21/07/2021.
  */
-class MainAdapter(private val context: Context, private val cocktailsList: List<Cocktail>, private val itemClickListener:OnCocktailClickListener) :
+class MainAdapter(private val context: Context, private val itemClickListener: OnCocktailClickListener) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+    private var cocktailList = listOf<Cocktail>()
 
     interface OnCocktailClickListener {
         fun onCocktailClick(cocktail: Cocktail)
     }
+
+    fun setCocktailList(cocktailList: List<Cocktail>) {
+        this.cocktailList = cocktailList
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         return MainViewHolder(
             LayoutInflater.from(context).inflate(R.layout.drink_row, parent, false)
@@ -28,12 +36,12 @@ class MainAdapter(private val context: Context, private val cocktailsList: List<
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when (holder) {
-            is MainViewHolder -> holder.bind(cocktailsList[position], position)
+            is MainViewHolder -> holder.bind(cocktailList[position], position)
         }
     }
 
     override fun getItemCount(): Int {
-        return cocktailsList.size
+        return cocktailList.size
     }
 
     inner class MainViewHolder(itemView: View) : BaseViewHolder<Cocktail>(itemView) {

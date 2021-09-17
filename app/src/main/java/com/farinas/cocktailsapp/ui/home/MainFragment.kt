@@ -1,33 +1,33 @@
-package com.farinas.cocktailsapp.ui
+package com.farinas.cocktailsapp.ui.home
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.farinas.cocktailsapp.data.local.AppDatabase
 import com.farinas.cocktailsapp.R
+import com.farinas.cocktailsapp.core.Resource
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentMainBinding
-import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
 import com.farinas.cocktailsapp.presentation.MainViewModel
-import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
-import com.farinas.cocktailsapp.vo.Resource
+import com.farinas.cocktailsapp.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
 
-    private val viewModel by viewModels<MainViewModel> { VMFactory(CocktailRepositoryImpl(DataSource(
-        AppDatabase.getDatabase(requireActivity().applicationContext)))) }
+    private val viewModel by activityViewModels<MainViewModel>()
     private var _binding: FragmentMainBinding? = null;
     private val binding get() = _binding!!
+    private lateinit var mainAdapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        mainAdapter = MainAdapter(requireContext(), this)
     }
 
     override fun onCreateView(
@@ -48,47 +48,37 @@ class MainFragment : Fragment(), MainAdapter.OnCocktailClickListener {
 
     private fun setUpObservers() {
         viewModel.fetchCocktailsList.observe(viewLifecycleOwner, Observer { result ->
+            binding.progressBar.showIf { result is Resource.Loading }
             when (result) {
                 is Resource.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.emptyContainer.root.hide()
                 }
                 is Resource.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.rvCocktails.adapter = MainAdapter(requireContext(), result.data, this)
+                    if (result.data.isEmpty()) {
+                        binding.rvCocktails.hide()
+                        binding.emptyContainer.root.show()
+                        return@Observer
+                    }
+                    binding.rvCocktails.show()
+                    mainAdapter.setCocktailList(result.data)
+                    binding.emptyContainer.root.hide()
                 }
                 is Resource.Failure -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        "An error occurred while fetching the data ${result.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("Ocurrió un error al traer los datos ${result.exception}")
                 }
             }
         })
     }
 
     private fun setUpSearchView() {
-        binding.searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    viewModel.setCocktail(query)
-                } else {
-                    viewModel.setCocktail("")
-                }
-
-                return false
-            }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                return false
-            }
-
-        })
+        binding.searchView.onQueryTextChanged {
+            viewModel.setCocktail(it)
+        }
     }
 
     private fun setupRecyclerView() {
         binding.rvCocktails.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCocktails.adapter = mainAdapter
     }
 
     override fun onCocktailClick(cocktail: Cocktail) {

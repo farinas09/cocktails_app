@@ -1,4 +1,4 @@
-package com.farinas.cocktailsapp.ui
+package com.farinas.cocktailsapp.ui.cocktailDetail
 
 import android.os.Bundle
 import android.util.Log
@@ -6,23 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.farinas.cocktailsapp.data.local.AppDatabase
+import com.farinas.cocktailsapp.R
 import com.farinas.cocktailsapp.data.model.Cocktail
-import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.databinding.FragmentCocktailDetailsBinding
-import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
 import com.farinas.cocktailsapp.presentation.MainViewModel
-import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CocktailDetailsFragment : Fragment() {
 
-    private val viewModel by viewModels<MainViewModel> { VMFactory(CocktailRepositoryImpl(DataSource(
-        AppDatabase.getDatabase(requireActivity().applicationContext)))) }
+    private val viewModel by activityViewModels<MainViewModel>()
     private lateinit var binding: FragmentCocktailDetailsBinding
     private lateinit var cocktail: Cocktail
+    private var isCocktailFavorite: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +45,28 @@ class CocktailDetailsFragment : Fragment() {
         binding.cocktailDescription.text = cocktail.description
         binding.cocktailAlcoholic.text = cocktail.hasAlcohol
 
-        binding.favoriteButton.setOnClickListener {
-            viewModel.saveFavorite(
-                CocktailEntity(
-                    cocktail.cocktailId,
-                    cocktail.image,
-                    cocktail.name,
-                    cocktail.description,
-                    cocktail.hasAlcohol
-                )
+        fun updateButtonIcon() {
+            val isCocktailFavorited = isCocktailFavorite ?: return
+
+            binding.favoriteButton.setImageResource(
+                when {
+                    isCocktailFavorited -> R.drawable.ic_baseline_delete_24
+                    else -> R.drawable.ic_favorite
+                }
             )
-            Toast.makeText(requireContext(), "Se agregó a favoritos", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.favoriteButton.setOnClickListener {
+            val isCocktailFavorite = isCocktailFavorite ?: return@setOnClickListener
+
+            viewModel.saveOrDeleteFavoriteCocktail(cocktail)
+            this.isCocktailFavorite = !isCocktailFavorite
+            updateButtonIcon()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            isCocktailFavorite = viewModel.isCocktailFavorite(cocktail)
+            updateButtonIcon()
         }
 
     }

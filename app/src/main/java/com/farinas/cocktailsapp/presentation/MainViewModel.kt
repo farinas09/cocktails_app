@@ -54,17 +54,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getFavoritesCocktails() = liveData<Resource<List<Cocktail>>>(Dispatchers.IO) {
-        emit(Resource.Loading())
+    fun getFavoritesCocktails() = liveData<Resource<List<Cocktail>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+        emit(Resource.Loading)
         try {
-            emit(cocktailRepository.getFavoriteCocktails())
+            emitSource(repository.getFavoritesCocktails().map { Resource.Success(it) })
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
     }
-    fun deleteCocktail(cocktail: Cocktail) {
+    fun deleteFavoriteCocktail(cocktail: Cocktail) {
         viewModelScope.launch {
-            cocktailRepository.deleteCocktail(cocktail)
+            repository.deleteFavoriteCocktail(cocktail)
+            toastHelper.sendToast("Cocktail deleted from favorites")
         }
     }
+
+    suspend fun isCocktailFavorite(cocktail: Cocktail): Boolean =
+        repository.isCocktailFavorite(cocktail)
 }

@@ -1,4 +1,4 @@
-package com.farinas.cocktailsapp.ui
+package com.farinas.cocktailsapp.ui.favorites
 
 import android.os.Bundle
 import android.util.Log
@@ -7,32 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farinas.cocktailsapp.data.local.AppDatabase
 import com.farinas.cocktailsapp.R
+import com.farinas.cocktailsapp.core.Resource
 import com.farinas.cocktailsapp.data.model.Cocktail
 import com.farinas.cocktailsapp.databinding.FragmentFavoritesBinding
 import com.farinas.cocktailsapp.domain.CocktailRepositoryImpl
 import com.farinas.cocktailsapp.presentation.MainViewModel
 import com.farinas.cocktailsapp.ui.viewmodel.VMFactory
+import com.farinas.cocktailsapp.utils.showToast
 import com.farinas.cocktailsapp.vo.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
+class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener {
 
-class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener{
-
-    private val viewModel by viewModels<MainViewModel> {
-        VMFactory(
-            CocktailRepositoryImpl(
-                DataSource(
-                    AppDatabase.getDatabase(requireActivity().applicationContext)
-                )
-            )
-        )
-    }
-
+    private val viewModel by activityViewModels<MainViewModel>()
+    private lateinit var favoritesAdapter: FavoritesAdapter
     private lateinit var binding: FragmentFavoritesBinding;
 
 
@@ -62,15 +58,14 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener{
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    binding.rvFavsCocktails.adapter = FavoritesAdapter(requireContext(), result.data, this)
-                    Log.d("FAVORITOS", "${result.data}")
+                    if (result.data.isEmpty()) {
+                        binding.emptyContainer.root.show()
+                        return@Observer
+                    }
+                    favoritesAdapter.setCocktailList(result.data)
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "An error occurred ${result.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("An error occurred ${result.exception}")
                 }
             }
         })
@@ -78,12 +73,13 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnCocktailClickListener{
 
     private fun setupRecyclerView() {
         binding.rvFavsCocktails.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFavsCocktails.adapter = favoritesAdapter
     }
 
     override fun onCocktailClick(cocktail: Cocktail, position: Int) {
         val bundle = Bundle()
         bundle.putParcelable("cocktail", cocktail)
-        findNavController().navigate(R.id.action_favoritesFragment_to_cocktailDetailsFragment, bundle)
+        findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToCocktailDetailsFragment(cocktail))
     }
 
 
