@@ -23,14 +23,14 @@ class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val currentCocktailName = savedStateHandle.getLiveData<String>("cocktailName", "margarita")
+    private val currentCocktailName = savedStateHandle.getLiveData<String>("cocktailName", "")
 
     fun setCocktail(cocktailName: String) {
         currentCocktailName.value = cocktailName
     }
 
     val fetchCocktailsList = currentCocktailName.distinctUntilChanged().switchMap { cocktailName ->
-        liveData<Resource<List<Cocktail>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+        liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading)
             try {
                 repository.getCocktailByName(cocktailName).collect {

@@ -1,6 +1,7 @@
 package com.farinas.cocktailsapp.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
@@ -12,11 +13,15 @@ import androidx.fragment.app.Fragment
 inline fun SearchView.onQueryTextChanged(crossinline onQueryTextChanged: (String) -> Unit) {
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String): Boolean {
+            Log.d("test", query);
             onQueryTextChanged(query)
             return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
+            if(newText.equals("")){
+                this.onQueryTextSubmit("");
+            }
             return false
         }
     })
