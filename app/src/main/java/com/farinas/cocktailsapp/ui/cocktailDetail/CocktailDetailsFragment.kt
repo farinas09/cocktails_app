@@ -26,7 +26,11 @@ class CocktailDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireArguments().let { cocktail = it.getParcelable("cocktail")!! }
+        requireArguments().let {
+            CocktailDetailsFragmentArgs.fromBundle(it).also { args ->
+            cocktail = args.cocktail
+        }
+        }
         Log.d("DETALLES", cocktail.toString())
     }
 

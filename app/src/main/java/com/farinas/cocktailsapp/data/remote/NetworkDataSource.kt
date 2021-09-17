@@ -17,7 +17,7 @@ class NetworkDataSource @Inject constructor(
 ) {
     suspend fun getCocktailByName(cocktailName: String): Flow<Resource<List<Cocktail>>> =
         callbackFlow {
-            trySend(
+            offer(
                 Resource.Success(
                     webService.getCocktailByName(cocktailName)?.cocktailList ?: listOf()
                 )

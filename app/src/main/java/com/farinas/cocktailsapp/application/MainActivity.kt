@@ -8,6 +8,7 @@ import androidx.navigation.ui.NavigationUI
 import com.farinas.cocktailsapp.R
 import com.farinas.cocktailsapp.core.observe
 import com.farinas.cocktailsapp.databinding.ActivityMainBinding
+import com.farinas.cocktailsapp.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

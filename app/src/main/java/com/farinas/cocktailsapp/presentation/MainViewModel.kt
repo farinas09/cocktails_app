@@ -1,9 +1,9 @@
 package com.farinas.cocktailsapp.presentation
 
 import androidx.lifecycle.*
+import com.farinas.cocktailsapp.application.ToastHelper
 import com.farinas.cocktailsapp.core.Resource
 import com.farinas.cocktailsapp.data.model.Cocktail
-import com.farinas.cocktailsapp.data.model.CocktailEntity
 import com.farinas.cocktailsapp.domain.CocktailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

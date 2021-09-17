@@ -29,7 +29,7 @@ class CocktailRepositoryImpl@Inject constructor(
     override suspend fun getCocktailByName(cocktailName: String): Flow<Resource<List<Cocktail>>> =
         callbackFlow {
 
-            trySend(getCachedCocktails(cocktailName))
+            offer(getCachedCocktails(cocktailName))
 
             networkDataSource.getCocktailByName(cocktailName).collect {
                 when (it) {
@@ -37,10 +37,10 @@ class CocktailRepositoryImpl@Inject constructor(
                         for (cocktail in it.data) {
                             saveCocktail(cocktail.asCocktailEntity())
                         }
-                        trySend(getCachedCocktails(cocktailName))
+                        offer(getCachedCocktails(cocktailName))
                     }
                     is Resource.Failure -> {
-                        trySend(getCachedCocktails(cocktailName))
+                        offer(getCachedCocktails(cocktailName))
                     }
                 }
             }

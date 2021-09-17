@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.favorites.FavoritesFragment">
 
+    <include
+        android:id="@+id/empty_container"
+        layout="@layout/empty_container"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_favs_cocktails"
         android:layout_width="match_parent"
